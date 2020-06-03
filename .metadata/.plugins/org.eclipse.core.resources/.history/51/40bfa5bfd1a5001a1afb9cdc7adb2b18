@@ -1,0 +1,11 @@
+package main.localhost.drupal.rs;
+
+public class RandomServiceImpl implements RandomService {
+
+	@Override
+	public int random(RandomRequest parameters) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}
