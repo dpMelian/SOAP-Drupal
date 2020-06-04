@@ -1,0 +1,5 @@
+package localhost.drupal.rs;
+
+public class RandomServiceImpl {
+
+}

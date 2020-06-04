@@ -1,10 +1,7 @@
 
-package main.localhost.drupal.rs;
+package localhost.drupal.rs;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
-import javax.xml.namespace.QName;
 
 
 /**
@@ -24,7 +21,6 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _RandomResponse_QNAME = new QName("http://drupal.localhost/rs", "randomResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: localhost.drupal.rs
@@ -34,20 +30,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RandomRequest }
+     * Create an instance of {@link Random }
      * 
      */
-    public RandomRequest createRandomRequest() {
-        return new RandomRequest();
+    public Random createRandom() {
+        return new Random();
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
+     * Create an instance of {@link RandomResponse }
      * 
      */
-    @XmlElementDecl(namespace = "http://drupal.localhost/rs", name = "randomResponse")
-    public JAXBElement<Integer> createRandomResponse(Integer value) {
-        return new JAXBElement<Integer>(_RandomResponse_QNAME, Integer.class, null, value);
+    public RandomResponse createRandomResponse() {
+        return new RandomResponse();
     }
 
 }

@@ -2,18 +2,25 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://drupal.localhost/rs" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="RandomService" targetNamespace="http://drupal.localhost/rs">
   <wsdl:types>
     <xsd:schema targetNamespace="http://drupal.localhost/rs">
-      <xsd:element name="randomRequest">
+      <xsd:element name="random">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element name="i1" type="xsd:int"/>
+          	<xsd:element name="i1" type="xsd:int" />
+          	<xsd:element name="i2" type="xsd:int"></xsd:element>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
-      <xsd:element name="randomResponse" type="xsd:int"></xsd:element>
+      <xsd:element name="randomResponse">
+      	<xsd:complexType>
+	      	<xsd:sequence>
+	      		<xsd:element name="out" type="xsd:int"></xsd:element>
+	      	</xsd:sequence>
+	      </xsd:complexType>
+      </xsd:element>
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="randomRequest">
-    <wsdl:part element="tns:randomRequest" name="parameters"/>
+    <wsdl:part element="tns:random" name="parameters"/>
   </wsdl:message>
   <wsdl:message name="randomResponse">
     <wsdl:part element="tns:randomResponse" name="parameters"/>

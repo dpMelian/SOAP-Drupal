@@ -28,9 +28,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.core.codec.Encoder;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
+
 import com.daw.*;
 
 /**
@@ -47,7 +52,14 @@ public final class RandomService_P1_Client {
     }
 
     public static void main(String args[]) throws java.lang.Exception {
-    	int random;
+    	Logger.getRootLogger().setLevel(Level.WARN);
+    	int min, max, out;
+    	Scanner sc = new Scanner(System.in);
+    	System.out.print("Introduce un tiempo mínimo (mayor que 5): ");
+    	min = sc.nextInt();
+    	System.out.print("Introduce un tiempo máximo: ");
+    	max = sc.nextInt();
+    	
     	
         URL wsdlURL = RandomService_Service.WSDL_LOCATION;
         if (args.length > 0 && args[0] != null && !"".equals(args[0])) { 
@@ -68,19 +80,20 @@ public final class RandomService_P1_Client {
         
         {
         System.out.println("Invoking random...");
-        localhost.drupal.rs.RandomRequest _random_parameters = new RandomRequest();
-        _random_parameters.setI1(5);
-        random = port.random(_random_parameters);
-        System.out.println("random.result=" + random);
+        localhost.drupal.rs.Random _random_parameters = new Random();
+        _random_parameters.setI1(min);
+        _random_parameters.setI2(max);
+        out = port.random(_random_parameters.getI1(), _random_parameters.getI2());
+        System.out.println("random.result=" + out);
 
         }
 
-        drupal(random);
+        drupal(out);
         
         System.exit(0);
     }
     
-    public static void drupal(int random) throws JsonProcessingException {
+    public static void drupal(int out) throws JsonProcessingException {
     	WebClient client1 = WebClient
                 .builder()
                 .baseUrl("http://drupal.localhost")
@@ -88,7 +101,7 @@ public final class RandomService_P1_Client {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, String.valueOf(MediaType.APPLICATION_JSON))
                 .build();
 
-        WebClient.RequestHeadersSpec<?> requestSpec1 = client1.get().uri(uriBuilder -> uriBuilder.path("/noticias/jupiter/eclipse-en-jupiter")
+        WebClient.RequestHeadersSpec<?> requestSpec1 = client1.get().uri(uriBuilder -> uriBuilder.path("/noticias/jupiter/escrutando-los-detalles-ocultos-de-las-nubes-de-jupiter")
                 .queryParam("_format", "json")
                 .build());
 
@@ -96,8 +109,6 @@ public final class RandomService_P1_Client {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-
-        System.out.println("Noticia ovni " + noticiaString);
 
         ObjectMapper objectMapper = new ObjectMapper();
         Noticia noticia = objectMapper.readValue(noticiaString, Noticia.class);
@@ -116,18 +127,18 @@ public final class RandomService_P1_Client {
         
         Noticia newNoticia = new Noticia();
 
+        /*
         final Title titulo = new Title();
         titulo.setValue("Números random en Júpiter");
         List<Title> titulo1 = new LinkedList<Title>(){{add(titulo);}};
 
-        /*
         final Body body = new Body();
         body.setValue(paramBody);
         List<Body> body1 = new LinkedList<>(){{add(body);}};
 		*/
 
         final FieldTiempoDeLectura time = new FieldTiempoDeLectura();
-        time.setValue(random);
+        time.setValue(out);
         List<FieldTiempoDeLectura> time1 = new LinkedList<FieldTiempoDeLectura>(){{add(time);}};
 		
         
@@ -135,7 +146,7 @@ public final class RandomService_P1_Client {
         tipo.setTargetId("noticia");
         List<Type> tipo1 = new LinkedList<Type>(){{add(tipo);}};
 
-        newNoticia.setTitle(titulo1);
+        // newNoticia.setTitle(titulo1);
         newNoticia.setType(tipo1);
         newNoticia.setFieldTiempoDeLectura(time1);
         
@@ -147,7 +158,7 @@ public final class RandomService_P1_Client {
         String jsonStr = obj.writeValueAsString(newNoticia);
 
         WebClient.RequestHeadersSpec<?> requestSpec3 = client1
-                .patch().uri(uriBuilder -> uriBuilder.path("/noticias/jupiter/eclipse-en-jupiter")
+                .patch().uri(uriBuilder -> uriBuilder.path("/noticias/jupiter/escrutando-los-detalles-ocultos-de-las-nubes-de-jupiter")
                         .queryParam("_format", "json")
                         .build())
                 .body(BodyInserters.fromPublisher(Mono.just(jsonStr),String.class));
